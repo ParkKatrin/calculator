@@ -8,6 +8,7 @@ expression = ""
 
 
 def squareroot():
+    global expression
     return True
 
 
@@ -26,17 +27,17 @@ def rootx():
 # Function to update expression in the text entry box
 def press(num):
     # point out the global expression variable
-    global expression
+    global expression, expression_field
 
     # concatenation of string
-    expression = expression + str(num)
+    expression = expression_field.get() + str(num)
 
     # update the expression by using set method
     equation.set(expression)
 
 
 # Function to evaluate the final expression
-def equalpress():
+def equalpress(event=None):
     # Try and except statement is used
     # for handling the errors like zero
     # division error etc.
@@ -46,6 +47,7 @@ def equalpress():
     try:
 
         global expression
+        # If no button was press it gets the string from the Entry
         if expression == "":
             total = str(eval(expression_field.get()))
         else:
@@ -63,8 +65,6 @@ def equalpress():
     # if error is generate then handle
     # by the except block
     except:
-
-        print('j', expression)
         equation.set(" error ")
         expression = ""
 
@@ -189,5 +189,8 @@ if __name__ == "__main__":
     Decimal = Button(gui, text='.', fg='black', bg='gray',
                      command=lambda: press('.'), height=3, width=7)
     Decimal.grid(row=11, column=0)
+
+    # Bind the Enter key to make the result
+    gui.bind('<Return>', equalpress)
     # start the GUI
     gui.mainloop()
